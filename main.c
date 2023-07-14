@@ -27,7 +27,9 @@ int main(void)
 			}
 			break;
 		}
-		printf("%s", input);
+
+		if (spaces(input) != 1)
+			printf("%s", input);
 
 	}
 	if (!finput)

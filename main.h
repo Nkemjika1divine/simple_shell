@@ -9,4 +9,8 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
+
+/*util.c*/
 int _putchar(char c);
+int is_space(char c);
+int spaces(char *input);
