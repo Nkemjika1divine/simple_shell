@@ -1,10 +1,34 @@
 #include "main.h"
 
-int main(void)
+/**
+ * main - this is the entry point of the shell program
+ * @argc: argument count
+ * @argv: argument vector
+ * @env: environmental variables
+ *
+ * Return: o
+ */
+
+int main(int argc, char **argv, char **env)
+{
+	if (argc == 1)
+		prompt(argv, env);
+	return (0);
+}
+
+
+/**
+ * prompt - Exexution if the executable file is entered on the command line
+ * @argv: argument vector
+ * @env: environmental variables
+ */
+
+void prompt(char **argv, char **env)
 {
 	char* prompt = "$ ", *input = NULL;
 	size_t input_size = 0;
-	int a, i, finput = 0;
+	int i, finput = 0;
+	ssize_t a;
 
 	while (1)
 	{
@@ -29,11 +53,51 @@ int main(void)
 		}
 
 		if (spaces(input) != 1)
+		{
 			printf("%s", input);
 
+			i = 0;
+			while (input[i])
+			{
+				if (input[i] == '\n')
+					input[i] = 0;
+				i++;
+			}
+			exec(input, argv, env);
+		}
 	}
 	if (!finput)
 		free(input);
+}
 
-	return (0);
+
+/**
+ * exec - executes the processes
+ * @input: user input
+ * @argv: argument vector
+ * @env: emvironmemtal variables
+ */
+
+void exec(char *input, char **argv, char **env)
+{
+	pid_t pid;
+	int status;
+	char *vec[] = {NULL, NULL};
+
+	vec[0] = input;
+	pid = fork();
+
+	if (pid < 0)
+	{
+		printf("Error in fork");
+		free(input);
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		if (execve(vec[0], vec, env) == -1)
+			printf("%s: %s No such file or directory", argv[0], input);
+	}
+	else
+		wait(&status);
 }
