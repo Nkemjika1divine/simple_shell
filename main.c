@@ -81,10 +81,19 @@ void prompt(char **argv, char **env)
 void exec(char *input, char **argv, char **env)
 {
 	pid_t pid;
-	int status;
+	int status, i;
 	char *vec[] = {NULL, NULL};
 
-	vec[0] = input;
+	/*break input intk tokens*/
+	vec[0] = strtok(input, " ");
+	i = 0;
+	while (vec[i] != NULL)
+	{
+		i++;
+		vec[i] = strtok(NULL, " ");
+	}
+
+	/*create processes*/
 	pid = fork();
 
 	if (pid < 0)
