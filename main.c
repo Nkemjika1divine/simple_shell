@@ -80,14 +80,12 @@ void exec(char *input, char **argv, char **env)
 	pid_t pid;
 	int status, i;
 	char *vec[] = {NULL, NULL};
-	const char *tokens[10];
 
 	/*break input intk tokens*/
 	vec[0] = strtok(input, " ");
 	i = 0;
-	while (vec[i] != NULL && i < 10)
+	while (vec[i] != NULL)
 	{
-		tokens[i] = vec[i];
 		i++;
 		vec[i] = strtok(NULL, " ");
 	}
@@ -103,7 +101,7 @@ void exec(char *input, char **argv, char **env)
 	}
 	else if (pid == 0)
 	{
-		if (execve(tokens[0], tokens, env) == -1)
+		if (execve(vec[0], vec, env) == -1)
 			printf("%s: %s No such file or directory", argv[0], input);
 	}
 	else
