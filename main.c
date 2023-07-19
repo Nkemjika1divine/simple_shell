@@ -25,7 +25,7 @@ int main(int argc, char **argv, char **env)
 
 void prompt(char **argv, char **env)
 {
-	char* prompt = "$ ", *input = NULL;
+	char *prompt = "$ ", *input = NULL;
 	size_t input_size = 0;
 	int i, finput = 0;
 	ssize_t a;
@@ -38,9 +38,8 @@ void prompt(char **argv, char **env)
 			for (i = 0; i < 2; i++)
 				_putchar(prompt[i]);
 		}
-
 		/*Accept user input*/
-		a = getline(&input, & input_size, stdin);
+		a = getline(&input, &input_size, stdin);
 		if (a < 0)
 		{
 			perror("getline");
@@ -51,11 +50,9 @@ void prompt(char **argv, char **env)
 			}
 			break;
 		}
-
 		if (spaces(input) != 1)
 		{
 			printf("%s", input);
-
 			i = 0;
 			while (input[i])
 			{
@@ -83,12 +80,14 @@ void exec(char *input, char **argv, char **env)
 	pid_t pid;
 	int status, i;
 	char *vec[] = {NULL, NULL};
+	const char *tokens[10];
 
 	/*break input intk tokens*/
 	vec[0] = strtok(input, " ");
 	i = 0;
-	while (vec[i] != NULL)
+	while (vec[i] != NULL && i < 10)
 	{
+		tokens[i] = vec[i];
 		i++;
 		vec[i] = strtok(NULL, " ");
 	}
@@ -104,7 +103,7 @@ void exec(char *input, char **argv, char **env)
 	}
 	else if (pid == 0)
 	{
-		if (execve(vec[0], vec, env) == -1)
+		if (execve(tokens[0], tokens, env) == -1)
 			printf("%s: %s No such file or directory", argv[0], input);
 	}
 	else
