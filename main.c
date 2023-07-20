@@ -91,6 +91,17 @@ void exec(char *input, char **argv, char **env)
 		i++;
 		vec[i] = strtok(NULL, " ");
 	}
+
+	if (i > 0 && tokens[i - 1][0] == '-')
+	{
+		tokens[i - 1] = strcat(tokens[i - 1], " ");
+		vec[0] = strtok(NULL, " ");
+		while (vec[0] != NULL && i < 10)
+		{
+			tokens[i - 1] = strcat(tokens[i - 1], " ");
+			vec[0] = strtok(NULL, " ");
+		}
+	}
 	tokens[i] = NULL;
 
 	/*create processes*/

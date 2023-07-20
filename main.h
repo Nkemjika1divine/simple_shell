@@ -22,5 +22,10 @@ void exec(char *input, char **argv, char **env);
 int _putchar(char c);
 int is_space(char c);
 int spaces(char *input);
+char *newstring(char *array[], int size);
+int _strlen(char *s);
+
+/*util1.c*/
+char *_strcat(char *dest, char *src);
 
 #endif
