@@ -1,1 +1,1 @@
-Thisis the repository for the simple shell task.
+This is the repository for the simple shell task.
