@@ -16,6 +16,8 @@ extern char **environ;
 
 /*main.c*/
 void prompt(char **argv, char **env);
+void format_str(char *input, char **argv, char **env);
+char *checkpath(char *str);
 void exec(char *input, char **argv, char **env);
 
 /*util.c*/
@@ -27,5 +29,7 @@ int _strlen(char *s);
 
 /*util1.c*/
 char *_strcat(char *dest, char *src);
+int inputcheck(char *str1, char *str2, int n);
+int str_cmp(char *str1, char *str2);
 
 #endif

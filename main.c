@@ -75,10 +75,9 @@ void prompt(char **argv, char **env)
  * @env: emvironmemtal variables
  */
 
-void exec(char *input, char **argv, char **env)
+void format_str(char *input, char **argv, char **env)
 {
-	pid_t pid;
-	int status, i;
+	int i;
 	char *vec[] = {NULL, NULL};
 	char *tokens[10];
 
@@ -103,6 +102,59 @@ void exec(char *input, char **argv, char **env)
 		}
 	}
 	tokens[i] = NULL;
+}
+
+
+
+/**
+ * checkpath - thus function checks if the file without the oath exists
+ * @str: the strung to check
+ *
+ * Return: the new string
+ */
+
+char *checkpath(char *str)
+{
+	DIR *dir = opendir("/bin/");
+	char *temp, *cats;
+	struct dirent *entry;
+
+	if (dir == NULL)
+		return (NULL);
+
+	entry = readdir(dir);
+	while (entry != NULL)
+	{
+		temp = entry->d_name;
+		if (str_cmp(temp, str) == 1)
+		{
+			cats = _strcat("/bin/", str);
+			closedir(dir);
+			return (cats);
+		}
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	return (NULL);
+}
+
+
+/**
+ * exec - this function executes the processes
+ * @input: the input string
+ * @argv: argument vector
+ * @env: environmental variables
+ */
+
+void exec(char *input, char **argv, char **env)
+{
+	int i, status;
+	char *vec[10];
+
+	i = 0;
+	vec[i] = strtok(input, " ");
+	while (vec[i])
+		vec(++i) = strtok(NULL, " ");
 
 	/*create processes*/
 	pid = fork();
@@ -115,7 +167,7 @@ void exec(char *input, char **argv, char **env)
 	}
 	else if (pid == 0)
 	{
-		if (execve(tokens[0], tokens, env) == -1)
+		if (execve(vec[0], vec, env) == -1)
 			printf("%s: %s No such file or directory", argv[0], input);
 	}
 	else
