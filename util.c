@@ -78,7 +78,7 @@ char *newstring(char *array[], int size)
 	string = (char *)malloc(length + 1); /*+1 is for null terminator*/
 	string[0] = '\0'; /*initialize cincatenated string as empty string*/
 
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 	{
 		_strcat(string, array[i]);
 		if (i < size - 1)

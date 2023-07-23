@@ -75,14 +75,14 @@ void prompt(char **argv, char **env)
  * @env: emvironmemtal variables
  */
 
-void format_str(char *input, char **argv, char **env)
+/*void format_str(char *input, char **argv, char **env)
 {
 	int i;
 	char *vec[] = {NULL, NULL};
-	char *tokens[10];
+	char *tokens[10];*/
 
 	/*break input intk tokens*/
-	vec[0] = strtok(input, " ");
+	/*vec[0] = strtok(input, " ");
 	i = 0;
 	while (vec[i] != NULL && i < 10)
 	{
@@ -102,7 +102,7 @@ void format_str(char *input, char **argv, char **env)
 		}
 	}
 	tokens[i] = NULL;
-}
+}*/
 
 
 
@@ -150,11 +150,12 @@ void exec(char *input, char **argv, char **env)
 {
 	int i, status;
 	char *vec[10];
+	pid_t pid;
 
 	i = 0;
 	vec[i] = strtok(input, " ");
 	while (vec[i])
-		vec(++i) = strtok(NULL, " ");
+		vec[++i] = strtok(NULL, " ");
 
 	/*create processes*/
 	pid = fork();
