@@ -42,7 +42,6 @@ void prompt(char **argv, char **env)
 		a = getline(&input, &input_size, stdin);
 		if (a < 0)
 		{
-			perror("getline");
 			if (!finput)
 			{
 				free(input);
@@ -52,7 +51,6 @@ void prompt(char **argv, char **env)
 		}
 		if (spaces(input) != 1)
 		{
-			printf("%s", input);
 			i = 0;
 			while (input[i])
 			{
@@ -60,7 +58,7 @@ void prompt(char **argv, char **env)
 					input[i] = 0;
 				i++;
 			}
-			exec(input, argv, env);
+			format_str(input, argv, env);
 		}
 	}
 	if (!finput)
@@ -69,40 +67,58 @@ void prompt(char **argv, char **env)
 
 
 /**
- * exec - executes the processes
+ * format_str - this function breaks down the input string for processing
  * @input: user input
  * @argv: argument vector
  * @env: emvironmemtal variables
  */
 
-/*void format_str(char *input, char **argv, char **env)
+void format_str(char *input, char **argv, char **env)
 {
-	int i;
-	char *vec[] = {NULL, NULL};
-	char *tokens[10];*/
+	char *token, *n, *c = "/";
+	char *tokens[10];
+	int i = 0;
 
-	/*break input intk tokens*/
-	/*vec[0] = strtok(input, " ");
-	i = 0;
-	while (vec[i] != NULL && i < 10)
+	/*Use strtok to tokenize the input string*/
+	token = strtok(input, " ");
+	while (token != NULL && i < 10 - 1)
 	{
-		tokens[i] = vec[i];
-		i++;
-		vec[i] = strtok(NULL, " ");
-	}
-
-	if (i > 0 && tokens[i - 1][0] == '-')
-	{
-		tokens[i - 1] = strcat(tokens[i - 1], " ");
-		vec[0] = strtok(NULL, " ");
-		while (vec[0] != NULL && i < 10)
-		{
-			tokens[i - 1] = strcat(tokens[i - 1], " ");
-			vec[0] = strtok(NULL, " ");
-		}
+		tokens[i++] = token;
+		token = strtok(NULL, " ");
 	}
 	tokens[i] = NULL;
-}*/
+
+	if (tokens[0][0] != c[0])
+	{
+		tokens[0] = paths(tokens[0]);
+		if (tokens[0] != NULL)
+		{
+			n = newstring(tokens, i);
+			if (n != NULL)
+			{
+				exec(n, argv, env);
+				free(tokens[0]);
+				free(n);
+			}
+		}
+		else
+			error_message(argv, input);
+	}
+	else
+	{
+		if (access(tokens[0], X_OK) == 0)
+		{
+			n = newstring(tokens, i);
+			if (n != NULL)
+				exec(n, argv, env);
+		}
+		else
+			error_message(argv, input);
+	}
+}
+
+
+
 
 
 

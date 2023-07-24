@@ -1,19 +1,6 @@
 #include "main.h"
 
 /**
- * _putchar - writes chatacyer to stdout
- * @c: the character to write
- *
- * Return: 1 on success
- */
-
-int _putchar(char c)
-{
-	return (write(1, &c, 1));
-}
-
-
-/**
  * spaces - this function checks a string for spaces and null characters.
  * @input: string to check
  *
@@ -65,24 +52,39 @@ int is_space(char c)
 
 char *newstring(char *array[], int size)
 {
-	int length = 0, separator, i;
+	int i, total_len;
 	char *string;
 
-	for (i = 0; i < size; i++)
-		length += _strlen(array[i]);
+	if (size == 0)
+	{
+		string = (char *)malloc(1);
+		if (string == NULL)
+		{
+			if (write(2, "Memory allocation error\n",
+				_strlen("Memory allocation error\n")) < 0)
+				perror("write");
+			exit(EXIT_FAILURE);
+		}
+		string[0] = '\0';
+		return (string);
+	}
 
-	/*Calculate the total length needed for whitespace separators*/
-	separator = size - 1;
-	length += separator;
-
-	string = (char *)malloc(length + 1); /*+1 is for null terminator*/
-	string[0] = '\0'; /*initialize cincatenated string as empty string*/
+	total_len = calculate_length(array, size);
+	string = (char *)malloc(total_len + 1);
+	if (string == NULL)
+	{
+		if (write(2, "Memory allocation error\n",
+			_strlen("Memory allocation error\n")) < 0)
+			perror("write");
+		exit(EXIT_FAILURE);
+	}
+	string[0] = '\0';
 
 	for (i = 0; i < size; i++)
 	{
 		_strcat(string, array[i]);
 		if (i < size - 1)
-			_strcat(string, " ");
+			strcat(string, " ");
 	}
 
 	return (string);
@@ -90,22 +92,93 @@ char *newstring(char *array[], int size)
 
 
 
+
 /**
- * _strlen - returns the length of a string
- * @s: string to check
+ * calculate_length - calculates lenght of string to be created
+ * @array: the array of strings which the strngs will be calculated
+ * @size: size of the array
  *
- * Return: lenght of string
+ * Return: lenght of the potential string
  */
 
-int _strlen(char *s)
+int calculate_length(char *array[], int size)
 {
-	int longi = 0;
+	int i, separator;
+	size_t length = 0;
 
-	while (*s != '\0')
+	for (i = 0; i < size; i++)
 	{
-		longi++;
-		s++;
+		if (length > SIZE_MAX - _strlen(array[i]))
+		{
+			if (write(2, "Integer overflow detected in length\n",
+				_strlen("Integer overflow detected in length\n")) < 0)
+				perror("write");
+			exit(EXIT_FAILURE);
+		}
+		length += _strlen(array[i]);
 	}
 
-	return (longi);
+	separator = size - 1;
+	if (length > SIZE_MAX - separator)
+	{
+		if (write(2, "Integer overflow detected in length\n",
+			_strlen("Integer overflow detected in length\n")) < 0)
+			perror("write");
+		exit(EXIT_FAILURE);
+	}
+	length += separator;
+
+	return (length);
+}
+
+
+
+
+
+/**
+ * error_message - prints error message
+ * @argv: the argument vector
+ * @input: user input
+ */
+
+void error_message(char **argv, char *input)
+{
+	char *err = "not found\n", *ptr = NULL, *output = NULL;
+	int argv_len, input_len, err_len, total_len;
+
+	argv_len = _strlen(argv[0]);
+	input_len = _strlen(input);
+	err_len = _strlen(err);
+	total_len = argv_len + input_len + err_len + 7;
+
+	output = (char *)malloc(total_len + 1);
+	if (output == NULL)
+		return;
+
+	ptr = output;
+	_memcpy(ptr, argv[0], argv_len);
+	ptr += argv_len;
+	*ptr = ':';
+	ptr++;
+	*ptr = ' ';
+	ptr++;
+	_memcpy(ptr, "1", 1);
+	ptr++;
+	*ptr = ':';
+	ptr++;
+	*ptr = ' ';
+	ptr++;
+	_memcpy(ptr, input, input_len);
+	ptr += input_len;
+	*ptr = ':';
+	ptr++;
+	*ptr = ' ';
+	ptr++;
+	_memcpy(ptr, err, err_len);
+	ptr += err_len;
+	*ptr = '\0'; /* Null-terminate the string */
+
+	if (write(1, output, total_len) < 0)
+		perror("write");
+	free(output);
 }

@@ -11,6 +11,8 @@
 #include <sys/wait.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <stdint.h>
+#include <errno.h>
 
 extern char **environ;
 
@@ -21,15 +23,24 @@ char *checkpath(char *str);
 void exec(char *input, char **argv, char **env);
 
 /*util.c*/
-int _putchar(char c);
 int is_space(char c);
 int spaces(char *input);
 char *newstring(char *array[], int size);
-int _strlen(char *s);
+void error_message(char **argv, char *input);
+int calculate_length(char *array[], int size);
 
 /*util1.c*/
 char *_strcat(char *dest, char *src);
 int inputcheck(char *str1, char *str2, int n);
 int str_cmp(char *str1, char *str2);
+int _putchar(char c);
+char *paths(char *command);
+
+/*util2.c*/
+char *_strncpy(char *dest, char *src, int n);
+char *_strdup(const char *str);
+char *_strcpy(char *dest, char *src);
+int _strlen(char *s);
+char *_memcpy(char *dest, char *src, unsigned int n);
 
 #endif
