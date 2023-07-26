@@ -5,13 +5,13 @@
  * @str: string to break
  * @delim: the delimeter
  *
- * Returns: tokens
+ * Return: tokens
  */
 
 char *_strtok(char *str, char *delim)
 {
-	static char* current_str = NULL;
-	char* token_start = NULL, *ptr = NULL;
+	static char *current_str;
+	char *token_start = NULL, *ptr = NULL;
 
 	if (str != NULL)
 		current_str = str;
