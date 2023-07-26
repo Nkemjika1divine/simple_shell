@@ -178,7 +178,7 @@ void error_message(char **argv, char *input)
 	ptr += err_len;
 	*ptr = '\0'; /* Null-terminate the string */
 
-	if (write(1, output, total_len) < 0)
+	if (write(2, output, total_len) < 0)
 		perror("write");
 	free(output);
 }

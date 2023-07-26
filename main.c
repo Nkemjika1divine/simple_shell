@@ -187,7 +187,10 @@ void exec(char *input, char **argv, char **env)
 	else if (pid == 0)
 	{
 		if (execve(vec[0], vec, env) == -1)
+		{
 			error_message(argv, input);
+			exit(127);
+		}
 	}
 	else
 		wait(&status);
