@@ -28,7 +28,6 @@ void prompt(char **argv, char **env)
 	char *prompt = "$ ", *input = NULL;
 	size_t input_size = 0;
 	int i, finput = 0;
-	ssize_t a;
 
 	while (1)
 	{
@@ -39,8 +38,7 @@ void prompt(char **argv, char **env)
 				_putchar(prompt[i]);
 		}
 		/*Accept user input*/
-		a = getline(&input, &input_size, stdin);
-		if (a < 0)
+		if (getline(&input, &input_size, stdin) < 0)
 		{
 			if (!finput)
 			{
@@ -59,12 +57,14 @@ void prompt(char **argv, char **env)
 				i++;
 			}
 			format_str(input, argv, env);
-			if (!finput)
-				free(input);
+			free(input);
 			input = NULL;
 		}
+		free(input);
+		input = NULL;
 	}
-	/*if (!finput)*/
+	if (!finput)
+		free(input);
 }
 
 
@@ -187,7 +187,7 @@ void exec(char *input, char **argv, char **env)
 	else if (pid == 0)
 	{
 		if (execve(vec[0], vec, env) == -1)
-			printf("%s: %s No such file or directory", argv[0], input);
+			error_message(argv, input);
 	}
 	else
 		wait(&status);
