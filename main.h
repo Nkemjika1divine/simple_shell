@@ -47,4 +47,6 @@ char *_memcpy(char *dest, char *src, unsigned int n);
 void inbuilt(char *input, char **env);
 void environment(void);
 
+char *_strtok(char *str, char *delim);
+
 #endif

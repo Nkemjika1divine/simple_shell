@@ -80,11 +80,11 @@ void format_str(char *input, char **argv, char **env)
 	char *token, *n, *s = "/", *tokens[10];
 	int i = 0;
 
-	token = strtok(input, " ");
+	token = _strtok(input, " ");
 	while (token != NULL && i < 10 - 1)
 	{
 		tokens[i++] = token;
-		token = strtok(NULL, " ");
+		token = _strtok(NULL, " ");
 	}
 	tokens[i] = NULL;
 	if (tokens[0][0] != s[0])
@@ -168,9 +168,9 @@ void exec(char *input, char **argv, char **env)
 	pid_t pid;
 
 	i = 0;
-	vec[i] = strtok(input, " ");
+	vec[i] = _strtok(input, " ");
 	while (vec[i])
-		vec[++i] = strtok(NULL, " ");
+		vec[++i] = _strtok(NULL, " ");
 
 	/*create processes*/
 	pid = fork();
