@@ -77,11 +77,9 @@ void prompt(char **argv, char **env)
 
 void format_str(char *input, char **argv, char **env)
 {
-	char *token, *n, *s = "/";
-	char *tokens[10]; /**c[] = {"cd", "env", "exit", "alias"};*/
+	char *token, *n, *s = "/", *tokens[10];
 	int i = 0;
 
-	/*Use strtok to tokenize the input string*/
 	token = strtok(input, " ");
 	while (token != NULL && i < 10 - 1)
 	{
@@ -89,37 +87,36 @@ void format_str(char *input, char **argv, char **env)
 		token = strtok(NULL, " ");
 	}
 	tokens[i] = NULL;
-
 	if (tokens[0][0] != s[0])
 	{
 		tokens[0] = paths(tokens[0]);
 		if (tokens[0] != NULL)
 		{
 			n = newstring(tokens, i);
-			if (n != NULL)
-			{
-				exec(n, argv, env);
-				free(tokens[0]);
-				free(n);
-			}
+			exec(n, argv, env);
+			free(tokens[0]);
+			free(n);
 		}
 		else
+		{
 			error_message(argv, input);
+			exit(127);
+		}
 	}
 	else
 	{
 		if (access(tokens[0], X_OK) == 0)
 		{
 			n = newstring(tokens, i);
-			if (n != NULL)
-				exec(n, argv, env);
+			exec(n, argv, env);
 		}
 		else
+		{
 			error_message(argv, input);
+			exit(127);
+		}
 	}
 }
-
-
 
 
 
@@ -189,7 +186,6 @@ void exec(char *input, char **argv, char **env)
 		if (execve(vec[0], vec, env) == -1)
 		{
 			error_message(argv, input);
-			exit(127);
 		}
 	}
 	else
