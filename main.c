@@ -59,12 +59,12 @@ void prompt(char **argv, char **env)
 				i++;
 			}
 			format_str(input, argv, env);
-			/*if (!finput)
-				free(input);*/
+			if (!finput)
+				free(input);
+			input = NULL;
 		}
 	}
-	if (!finput)
-		free(input);
+	/*if (!finput)*/
 }
 
 
