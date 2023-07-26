@@ -43,4 +43,8 @@ char *_strcpy(char *dest, char *src);
 int _strlen(char *s);
 char *_memcpy(char *dest, char *src, unsigned int n);
 
+/*inbuilt.c*/
+void inbuilt(char *input, char **env);
+void environment(void);
+
 #endif

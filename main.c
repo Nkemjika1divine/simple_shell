@@ -59,6 +59,8 @@ void prompt(char **argv, char **env)
 				i++;
 			}
 			format_str(input, argv, env);
+			/*if (!finput)
+				free(input);*/
 		}
 	}
 	if (!finput)
@@ -75,8 +77,8 @@ void prompt(char **argv, char **env)
 
 void format_str(char *input, char **argv, char **env)
 {
-	char *token, *n, *c = "/";
-	char *tokens[10];
+	char *token, *n, *s = "/";
+	char *tokens[10]; /**c[] = {"cd", "env", "exit", "alias"};*/
 	int i = 0;
 
 	/*Use strtok to tokenize the input string*/
@@ -88,7 +90,7 @@ void format_str(char *input, char **argv, char **env)
 	}
 	tokens[i] = NULL;
 
-	if (tokens[0][0] != c[0])
+	if (tokens[0][0] != s[0])
 	{
 		tokens[0] = paths(tokens[0]);
 		if (tokens[0] != NULL)
