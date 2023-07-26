@@ -84,7 +84,7 @@ char *newstring(char *array[], int size)
 	{
 		_strcat(string, array[i]);
 		if (i < size - 1)
-			strcat(string, " ");
+			_strcat(string, " ");
 	}
 
 	return (string);

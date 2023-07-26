@@ -177,7 +177,6 @@ void exec(char *input, char **argv, char **env)
 
 	if (pid < 0)
 	{
-		printf("Error in fork");
 		free(input);
 		exit(EXIT_FAILURE);
 	}
