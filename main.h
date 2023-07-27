@@ -49,4 +49,6 @@ void environment(void);
 
 char *_strtok(char *str, char *delim);
 
+void not_path(char *input, char **argv, char **env);
+
 #endif

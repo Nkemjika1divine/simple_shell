@@ -77,7 +77,7 @@ void prompt(char **argv, char **env)
 
 void format_str(char *input, char **argv, char **env)
 {
-	char *token, *n, *s = "/", *tokens[10];
+	char *token, *n = NULL, *s = "/", *tokens[10];
 	int i = 0;
 
 	token = _strtok(input, " ");
@@ -87,28 +87,25 @@ void format_str(char *input, char **argv, char **env)
 		token = _strtok(NULL, " ");
 	}
 	tokens[i] = NULL;
-	if (tokens[0][0] != s[0])
+
+	if (str_cmp(tokens[0], "exit") == 0)
 	{
-		tokens[0] = paths(tokens[0]);
-		if (tokens[0] != NULL)
-		{
-			n = newstring(tokens, i);
-			exec(n, argv, env);
-			free(tokens[0]);
-			free(n);
-		}
-		else
-		{
-			error_message(argv, input);
-			exit(127);
-		}
+		free(input);
+		exit(0);
 	}
+
+	if (tokens[0][0] != s[0])
+		not_path(input, argv, env);
 	else
 	{
 		if (access(tokens[0], X_OK) == 0)
 		{
 			n = newstring(tokens, i);
-			exec(n, argv, env);
+			if (n != NULL)
+			{
+				exec(n, argv, env);
+				free(n);
+			}
 		}
 		else
 		{
